@@ -1,10 +1,10 @@
-import random
 import re
+import random
 
-from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.timezone import now
+from django.conf import settings
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from apps.utils.abs_model import AbstractBaseModel
 
@@ -25,7 +25,7 @@ class PhoneToken(AbstractBaseModel):
 
     def is_expired(self):
         # Check if the OTP is expired since it was created
-        return (now() - self.created_at).total_seconds() > 300
+        return (timezone.now() - self.created_at).total_seconds() > 60 * settings.OTP_EXPIRY
 
     def clean_phone_number(self):
         """
